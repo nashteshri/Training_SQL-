@@ -1,0 +1,168 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup; // Define form variable
+
+  constructor(private fb: FormBuilder) {} // Inject FormBuilder
+
+  ngOnInit() {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]], // Email validation
+      password: ['', [Validators.required, Validators.minLength(6)]], // Password validation
+      rememberMe: [false] // Checkbox
+    });
+  }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      console.log('Form Submitted', this.loginForm.value);
+    } else {
+      console.log('Form is invalid');
+    }
+  }
+}---------
+
+
+<div class="login-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <h2>Login to Your Account</h2>
+
+    <!-- Tabs for Bidder / Company Login -->
+    <div class="tabs">
+      <button type="button" class="tab active">Bidder Login</button>
+      <button type="button" class="tab">Company Login</button>
+    </div>
+
+    <!-- Email Input -->
+    <div class="form-group">
+      <input type="email" formControlName="email" placeholder="Email or Username">
+      <span *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched">
+        Valid email is required
+      </span>
+    </div>
+
+    <!-- Password Input -->
+    <div class="form-group">
+      <input type="password" formControlName="password" placeholder="Password">
+      <span *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched">
+        Password must be at least 6 characters
+      </span>
+    </div>
+
+    <!-- Remember Me Checkbox -->
+    <div class="form-group checkbox">
+      <input type="checkbox" formControlName="rememberMe"> Remember me
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="loginForm.invalid">Proceed</button>
+
+    <!-- OR Separator -->
+    <div class="separator">OR</div>
+
+    <!-- Social Login Buttons -->
+    <button type="button" class="social google">Continue with Google</button>
+    <button type="button" class="social facebook">Continue with Facebook</button>
+    <button type="button" class="social apple">Continue with Apple</button>
+  </form>
+</div>-----
+
+.login-container {
+  width: 350px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.tab {
+  background: #ddd;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+}
+
+.tab.active {
+  background: #007bff;
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #ccc;
+}
+
+.separator {
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+.social {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.google {
+  background: #db4437;
+  color: white;
+}
+
+.facebook {
+  background: #4267b2;
+  color: white;
+}
+
+.apple {
+  background: black;
+  color: white;
+}
